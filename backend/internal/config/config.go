@@ -3,8 +3,8 @@ package config
 import (
 	"io/ioutil"
 
-	"github.com/BurntSushi/toml"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"gopkg.in/yaml.v2"
 )
 
 const (
@@ -18,10 +18,10 @@ const (
 // application config
 // of the application.
 type Config struct {
-	Env      string      `toml:"env"`
-	Debug    bool        `toml:"debug"`
-	App      AppConfig   `toml:"app"`
-	Database AppDatabase `toml:"database"`
+	Env      string      `yaml:"env"`
+	Debug    bool        `yaml:"debug"`
+	App      AppConfig   `yaml:"app"`
+	Database AppDatabase `yaml:"database"`
 }
 
 // Validate validates the application configuration.
@@ -53,7 +53,7 @@ func Load(cfg string) (Config, error) {
 		return defaultConfig, err
 	}
 
-	if err := toml.Unmarshal(byt, &defaultConfig); err != nil {
+	if err := yaml.Unmarshal(byt, &defaultConfig); err != nil {
 		return defaultConfig, err
 	}
 

@@ -9,8 +9,9 @@ import (
 )
 
 const AppVersion = "0.0.0"
+const configFile = "./config/local.yaml"
 
-var flagConfig = flag.String("config", "./config/local.toml", "Path to config file. Default: local")
+var flagConfig = flag.String("config", configFile, "Path to config file. Default: local")
 
 func main() {
 	flag.Parse()

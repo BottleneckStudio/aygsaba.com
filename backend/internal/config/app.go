@@ -5,7 +5,7 @@ package config
 // configuration.
 // i.e host, port, version, etc..
 type AppConfig struct {
-	Host       string `toml:"host"`
-	Port       int    `toml:"port"`
-	APIVersion string `toml:"api_version"`
+	Host       string `yaml:"host"`
+	Port       int    `yaml:"port"`
+	APIVersion string `yaml:"api_version"`
 }
