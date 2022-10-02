@@ -1,7 +1,7 @@
 package server
 
 import (
-  "net/http"
+	"net/http"
 )
 
 // Server represents

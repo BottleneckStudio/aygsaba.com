@@ -1,0 +1,11 @@
+env = "local"
+debug = true
+
+[app]
+  host = "0.0.0.0"
+  port = 14447
+  api_version = "/api/v1"
+  
+[database]
+  dialect = "sqlite3"
+  dsn = "file:database/app.sqlite3?cache=shared&mode=rwc&_journal_mode=WAL"
