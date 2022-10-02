@@ -1,12 +1,6 @@
 package server
 
-<<<<<<< HEAD:backend/http/server/server.go
 import "net/http"
-=======
-import (
-	"net/http"
-)
->>>>>>> e5d0e40 (added Makefile and config):backend/src/http/server/server.go
 
 // Server represents
 // the application server.

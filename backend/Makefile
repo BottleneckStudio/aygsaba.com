@@ -11,6 +11,3 @@ MAIN=cmd/${NAME}/api.go
 
 build:
 	GOOS=linux GOARCH=amd64 go build -installsuffix -a -tags netgo ${LDFLAGS} -o ${OUT} ${MAIN}	
-
-docker-local: migrate
-	docker build -f docker/Dockerfile.local -t api:${SHA} ./
