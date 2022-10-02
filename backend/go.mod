@@ -2,7 +2,11 @@ module org.aygsaba.com
 
 go 1.19
 
-require github.com/stretchr/testify v1.8.0
+require (
+	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
+	github.com/stretchr/testify v1.8.0
+	gopkg.in/yaml.v2 v2.2.2
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

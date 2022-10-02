@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"org.aygsaba.com/http/server"
+	"org.aygsaba.com/src/http/server"
 )
 
 func TestNewServer(t *testing.T) {
