@@ -5,7 +5,7 @@ SHA = $(shell git rev-parse --short HEAD)
 # since we are using sqlite3 as our primary datastore, use this as our ldflags.
 LDFLAGS=-ldflags='-X api.version=${VERSION}.build.${TODAY}:${SHA} -s -w -extldflags "-static"'
 
-NAME=api
+NAME=app
 OUT=.build/api
 MAIN=cmd/${NAME}/api.go
 
