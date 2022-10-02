@@ -6,7 +6,6 @@ import (
 	"time"
 )
 
-
 // Option type is a custom
 // type that accepts a *Server
 // inorder for it to be
