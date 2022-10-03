@@ -50,4 +50,4 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=compress /config/local.yaml /config/local.yaml
 COPY --from=compress /api /api
 EXPOSE 14447
-CMD ["./api", "--config", "config/local.toml"]
+CMD ["./api", "--config", "config/local.yaml"]
