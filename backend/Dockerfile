@@ -40,7 +40,7 @@ RUN xz -d -c /usr/local/upx-3.96-amd64_linux.tar.xz | \
     tar -xOf - upx-3.96-amd64_linux/upx > /bin/upx && \
     chmod a+x /bin/upx
 COPY --from=build /go/src/aygsaba.com/.build/api /api
-COPY --from=build /go/src/app/aygsaba.com/local.yaml /config/local.yaml
+COPY --from=build /go/src/aygsaba.com/config/local.yaml /config/local.yaml
 RUN upx ./api
 
 # Stage 3
@@ -50,4 +50,4 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=compress /config/local.yaml /config/local.yaml
 COPY --from=compress /api /api
 EXPOSE 14447
-CMD ["./api", "--config", "config/local.toml"]
+CMD ["./api", "--config", "config/local.yaml"]
