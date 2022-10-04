@@ -1,24 +1,41 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import axios from 'axios';
 
 import endpoints from './api.endpoints';
-import { Auth } from '../types/models';
+import { Auth, Message } from '../types/models';
 
-const useLoginUser = () => {
-  const [response, setResponse] = useState<Auth | null>(null);
+const useService = () => {
+  const [response, setResponse] = useState<any | null>(null);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchLogin = () => {
+  const fetchLogin = useCallback(() => {
     axios.post(`/api${endpoints.signin}`)
-    .then(res => setResponse(res.data))
+    .then(res => setResponse(res.data as Auth))
     .catch(err => setError(err))
     .finally(() => setLoading(false));
-  }
+  }, []);
 
-  useEffect(() => fetchLogin(), []);
+  const getMessages = useCallback(({ token }: { token: string }) => {
+    axios.get(`/api${endpoints.messages}`, {
+      headers: { token }
+    })
+    .then(res => setResponse(res.data as Message[]))
+    .catch(err => setError(err))
+    .finally(() => setLoading(false));
+  }, []);
 
-  return { response, error, loading };
+  return {
+    actions: {
+      fetchLogin,
+      getMessages
+    },
+    result: {
+      response,
+      error,
+      loading
+    }
+  };
 };
 
-export default useLoginUser;
+export default useService;

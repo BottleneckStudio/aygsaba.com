@@ -6,20 +6,21 @@ import Button from '../../../components/Button';
 
 import { Container } from './components';
 import { AuthContext } from '../../../context/auth';
-import useLoginUser from '../../../services/http.service';
+import useService from '../../../services/http.service';
 
 const SigninPage = () => {
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-  const result = useLoginUser();
+  const { actions: { fetchLogin }, result } = useService();
 
-  const handleClick = () => {
+  const handleClick = () => fetchLogin();
+
+  useEffect(() => {
     if (result.error === '' && result.response !== null) {
       setAuth(result.response);
-
       navigate('/me', { replace: true });
     }
-  };
+  }, [result]);
 
   useEffect(() => {
     if (auth.token !== '') {

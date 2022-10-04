@@ -12,5 +12,5 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  height: calc(100vh - 3.875rem);
+  height: calc(100vh - 5.813rem);
 `;

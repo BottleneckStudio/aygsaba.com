@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo, FC } from 'react';
 
-import DefaultOptions from '../types/layout-options';
+import { DefaultOptions } from '../types/layout-options';
 import { Auth } from '../types/models';
 
 const initialState = {

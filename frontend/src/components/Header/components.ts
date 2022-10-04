@@ -5,7 +5,7 @@ export const Container = styled.div<{ center: boolean }>`
   display: flex;
   align-items: center;
   justify-content: ${p => p.center ? 'space-between' : 'center'};
-  padding: 0.625rem;
+  padding: 1.563rem 1.25rem;
 `;
 
 export const UserImage = styled.img`
@@ -18,4 +18,7 @@ export const UserImage = styled.img`
 
 export const HeaderTitle = styled.h1`
   margin: 0;
+  display: flex;
+  align-items: center;
+  font-size: 1.875rem;
 `;
