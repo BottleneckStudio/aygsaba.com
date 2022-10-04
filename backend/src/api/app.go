@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"org.aygsaba.com/internal/config"
+	appHandler "org.aygsaba.com/src/api/handler"
 	"org.aygsaba.com/src/api/router"
 	"org.aygsaba.com/src/http/server"
 )
@@ -20,18 +21,17 @@ var ctx = context.Background()
 // This serves as the
 // bootup point of the app.
 func Start(conf *config.Config) error {
-	appHandler := router.New()
+	appRouter := router.New()
 
 	// start server
 	serverAddr := fmt.Sprintf("%s:%d", conf.App.Host, conf.App.Port)
 	srv := server.New(
-		server.WithHandler(appHandler),
+		server.WithHandler(appRouter),
 		server.WithAddress(serverAddr),
 	)
 
-	// inject app routes here
-	// TODO:::
-	// appHandler.Register(r)
+	handler := appHandler.New()
+	handler.Initialize(appRouter)
 
 	serverCtx, cancel := context.WithTimeout(ctx, 6*time.Second)
 
