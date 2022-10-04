@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-import type DefaultOptions from '../../types/layout-options';
+import type { DefaultOptions } from '../../types/layout-options';
 import Header from '../Header';
 import { Container, Content } from './components';
 

@@ -1,5 +1,9 @@
-interface DefaultOptions {
+import { Message } from './models';
+
+export interface DefaultOptions {
   children: React.ReactNode;
 }
 
-export default DefaultOptions;
+export interface MessageItemOptions {
+  message: Message;
+}
