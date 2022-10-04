@@ -8,3 +8,4 @@ export const Container = styled.div`
   padding-top: 6rem;
 `;
 
+export const Content = styled.div``;
