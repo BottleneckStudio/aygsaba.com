@@ -1,3 +1,4 @@
+/* eslint-disable no-confusing-arrow */
 import styled from 'styled-components';
 
 export const Container = styled.div<{ center: boolean }>`
@@ -18,4 +19,3 @@ export const UserImage = styled.img`
 export const HeaderTitle = styled.h1`
   margin: 0;
 `;
-
