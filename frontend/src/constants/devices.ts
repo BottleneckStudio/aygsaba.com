@@ -4,7 +4,7 @@ const sizes = {
   mobileL: '425px',
   tablet: '768px',
   laptop: '1024px',
-  desktop: '1440px',
+  desktop: '1440px'
 };
 
 const devices = {
@@ -13,7 +13,7 @@ const devices = {
   mobileL: `(min-width: ${sizes.mobileL})`,
   tablet: `(min-width: ${sizes.tablet})`,
   laptop: `(min-width: ${sizes.laptop})`,
-  desktop: `(min-width: ${sizes.desktop})`,
+  desktop: `(min-width: ${sizes.desktop})`
 };
 
 export default devices;
