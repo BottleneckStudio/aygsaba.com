@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 
 import colors from '../../../constants/colors';
+import devices from '../../../constants/devices';
 
 export const MessageList = styled.div`
   padding: 1.25rem;
+
+  @media ${devices.tablet} {
+    width: 25rem;
+    margin: 0 auto;
+  }
 `;
 
 export const Message = styled.div`

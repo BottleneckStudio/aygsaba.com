@@ -25,10 +25,24 @@ const useService = () => {
     .finally(() => setLoading(false));
   }, []);
 
+  const createMessage = useCallback((message: Message & { token: string }) => {
+    const { token } = message;
+
+    axios.post(
+      `/api${endpoints.messages}`,
+      message,
+      { headers: { token } }
+    )
+    .then(res => setResponse(res.data as Message[]))
+    .catch(err => setError(err))
+    .finally(() => setLoading(false));
+  }, []);
+
   return {
     actions: {
       fetchLogin,
-      getMessages
+      getMessages,
+      createMessage
     },
     result: {
       response,

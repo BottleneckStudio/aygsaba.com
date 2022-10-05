@@ -1,11 +1,18 @@
 /* eslint-disable no-confusing-arrow */
 import styled from 'styled-components';
 
+import devices from '../../constants/devices';
+
 export const Container = styled.div<{ center: boolean }>`
   display: flex;
   align-items: center;
   justify-content: ${p => p.center ? 'space-between' : 'center'};
   padding: 1.563rem 1.25rem;
+
+  @media ${devices.tablet} {
+    width: 64rem;
+    margin: 0 auto;
+  }
 `;
 
 export const UserImage = styled.img`
