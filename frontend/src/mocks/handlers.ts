@@ -1,28 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
+/* eslint-disable @typescript-eslint/return-await */
 import { rest } from 'msw';
-import { factory, primaryKey } from '@mswjs/data'
 import { faker } from '@faker-js/faker';
 
 import endpoints from '../services/api.endpoints';
 
-const db = factory({
-  message: {
-    id: primaryKey(faker.datatype.uuid),
-    title: faker.random.words,
-    content: faker.random.words,
-    hideByView: faker.datatype.boolean,
-    limit: faker.datatype.number,
-    status: () => faker.helpers.arrayElement(['ready', 'ongoing', 'done'])
-  }
-});
-
-const createArrayOfObjects = (limit: number, create: any) => {
-  for (let i = 1; i <= limit; i += 1) {
-    create();
-  }
-};
-
-createArrayOfObjects(5, db.message.create);
+import db from './db';
 
 const handlers = [
   // signin handler
@@ -53,6 +36,28 @@ const handlers = [
         ctx.status(200),
         ctx.json(messageList)
       );
+    }
+  ),
+  // create message
+  rest.post(
+    `/api${endpoints.messages}`,
+    async (req, res, ctx) => {
+      const token = req.headers.get('token');
+      const messageBody = await req.json();
+
+      if (token === null || token === '') {
+        return res(ctx.status(401));
+      }
+
+      db.message.create({
+        title: messageBody.title,
+        content: messageBody.content,
+        hideByView: messageBody.hideByView,
+        limit: messageBody.limit,
+        status: messageBody.status
+      });
+
+      return res(ctx.status(200));
     }
   )
 ];
