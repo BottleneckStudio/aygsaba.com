@@ -57,8 +57,6 @@ const handlers = [
         status: messageBody.status
       });
 
-      console.log('list: ', db.message.getAll());
-
       return res(ctx.status(200));
     }
   )
