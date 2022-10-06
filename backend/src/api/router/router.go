@@ -6,7 +6,13 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
-func New() *echo.Echo {
+// AppRouter wraps
+// labstack/echo.
+type AppRouter struct {
+	*echo.Echo
+}
+
+func New() *AppRouter {
 	engine := echo.New()
 	engine.Logger.SetLevel(log.DEBUG)
 	engine.Pre(middleware.RemoveTrailingSlash())
@@ -27,5 +33,7 @@ func New() *echo.Echo {
 		AllowMethods: []string{echo.GET, echo.HEAD, echo.PUT, echo.PATCH, echo.POST, echo.DELETE},
 	}))
 
-	return engine
+	return &AppRouter{
+		engine,
+	}
 }

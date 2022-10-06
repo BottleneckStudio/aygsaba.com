@@ -18,3 +18,6 @@ local: build
 
 	# alternatively, passing a config file
 	# ./.build/api -config=config/dev.yaml
+
+test:
+	GO111MODULE=on go test -race -v -coverprofile=cover.out ./...
