@@ -23,9 +23,7 @@ export const UserImage = styled.img`
   object-fit: cover;
 `;
 
-export const HeaderTitle = styled.h1`
+export const HeaderLogo = styled.img`
   margin: 0;
-  display: flex;
-  align-items: center;
-  font-size: 1.875rem;
+  height: 1.875rem;
 `;

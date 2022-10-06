@@ -23,6 +23,17 @@ export const Message = styled.div`
   margin-bottom: 2rem;
 `;
 
+export const MessageContent = styled.p`
+  margin: 0;
+  width: 100%;
+  border-radius: 0.5rem;
+  background-color: ${colors.silvergray};
+  padding: 3rem;
+  color: ${colors.green};
+  text-align: center;
+  font-size: 2.5rem;
+`;
+
 export const MessageButton = styled.button<{ status: string }>`
   border-radius: 6.25rem;
   position: absolute;

@@ -8,12 +8,16 @@ import {
   MessageButton
 } from './components';
 
-const MessageItem: FC<MessageItemOptions> = ({ message }) => (
+const MessageItem: FC<MessageItemOptions> = ({
+  message,
+  onShare
+}) => (
   <Message>
     <h3>{message.title}</h3>
     <MessageButton
       status={message.status}
       disabled={message.status !== 'ready'}
+      onClick={() => onShare(message)}
     >
       {message.status === 'ready' && (
         <p>

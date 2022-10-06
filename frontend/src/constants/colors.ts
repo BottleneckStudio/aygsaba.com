@@ -10,7 +10,9 @@ const colors = {
   disabledgray: '#dbdbdb',
   purple: '#9936e7',
   lightblue: '#7198ff',
-  navyblue: '#1c3780'
+  navyblue: '#1c3780',
+  red: '#c51818',
+  green: '#3eb57c'
 };
 
 export default colors;
