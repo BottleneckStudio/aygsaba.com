@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './assets/styles/main.scss';
 
 import AuthProvider from './context/auth';
+
 import SigninPage from './pages/public/signin';
 import MePage from './pages/protected/me';
 import LogoutPage from './pages/public/logout';

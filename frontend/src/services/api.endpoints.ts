@@ -1,5 +1,5 @@
 const endpoints = {
-  baseUrl: 'http:/127.0.0.1:3000/api',
+  baseUrl: `${process.env.NODE_API_DOMAIN as string}/api`,
   signin: '/signin',
   messages: '/messages'
 };
