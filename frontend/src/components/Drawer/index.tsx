@@ -5,6 +5,12 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Container, Card, CardClose } from './components';
 import { DrawerOptions } from '../../types/layout-options';
 
+export interface DrawerState {
+  isOpen: boolean;
+  title: string;
+  content: React.ReactNode | null;
+}
+
 const Drawer: FC<DrawerOptions> = ({
   open,
   onClose,
@@ -27,6 +33,15 @@ const Drawer: FC<DrawerOptions> = ({
       }, 300);
     }
   }, [open]);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, []);
 
   return (
     <>

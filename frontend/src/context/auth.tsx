@@ -3,7 +3,7 @@ import React, { useEffect, useState, useMemo, FC } from 'react';
 import { DefaultOptions } from '../types/layout-options';
 import { Auth } from '../types/models';
 
-const initialState = {
+const initialState: Auth = {
   token: '',
   username: '',
   image: ''
@@ -28,7 +28,7 @@ const AuthProvider: FC<DefaultOptions> = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('auth', JSON.stringify(auth));
-  }, [auth]);
+  }, []);
 
   const value = useMemo(() => ({ auth, setAuth }), [auth]);
 

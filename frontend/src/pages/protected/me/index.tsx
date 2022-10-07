@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from '../../../components/Layout';
-import Drawer from '../../../components/Drawer';
+import Drawer, { DrawerState } from '../../../components/Drawer';
 
 import { AuthContext } from '../../../context/auth';
 import useService from '../../../services/http.service';
@@ -29,33 +29,48 @@ const MePage = () => {
   const { actions: { getMessages }, result } = useService();
 
   const [messageList, setMessageList] = useState<Message[]>([]);
-  const [drawerContent, setDrawerContent] = useState<React.ReactNode | null>(null);
-  const [drawerTitle, setDrawerTitle] = useState<string>('');
-  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
+  const [drawerState, setDrawerState] = useState<DrawerState>({
+    isOpen: false,
+    title: '',
+    content: null
+  });
 
-  const closeDrawer = () => setOpenDrawer(false);
+  // closes drawer
+  const closeDrawer = () => setDrawerState({
+    ...drawerState,
+    isOpen: false
+  });
 
+  // callback when successfully created message
   const onCreateMessage = () => {
     closeDrawer();
     getMessages({ token: auth.token });
   };
 
-  const openSubjectForm = () => {
-    setOpenDrawer(true);
-    setDrawerTitle('Create Message');
-    setDrawerContent(<CreateMessage onSubmit={onCreateMessage} />);
+  // opens create message form using the drawer
+  const openCreateForm = () => {
+    setDrawerState({
+      isOpen: true,
+      title: 'Create Message',
+      content: <CreateMessage onSubmit={onCreateMessage} />
+    });
   };
 
+  // opens share message form using the drawer
   const openShareForm = (message: Message) => {
-    setOpenDrawer(true);
-    setDrawerTitle('Share Message');
-    setDrawerContent(<ShareMessage message={message} />);
+    setDrawerState({
+      isOpen: true,
+      title: 'Share Message',
+      content: <ShareMessage message={message} />
+    });
   };
 
+  // gets all the messages
   useEffect(() => {
     getMessages({ token: auth.token });
   }, []);
 
+  // sets fetchted messages to local state
   useEffect(() => {
     if (result.error === '' && result.response !== null && !result.loading) {
       setMessageList(result.response);
@@ -64,7 +79,7 @@ const MePage = () => {
 
   return (
     <>
-      <Layout isBlurred={openDrawer}>
+      <Layout isBlurred={drawerState.isOpen}>
         <MessageList>
           {messageList.length > 0
             ? messageList.map(item => (
@@ -76,14 +91,14 @@ const MePage = () => {
             ))
             : <>No result</>}
         </MessageList>
-        <FloatingButton onClick={openSubjectForm} />
+        <FloatingButton onClick={openCreateForm} />
       </Layout>
       <Drawer
-        open={openDrawer}
+        open={drawerState.isOpen}
         onClose={closeDrawer}
-        title={drawerTitle}
+        title={drawerState.title}
       >
-        {drawerContent}
+        {drawerState.content}
       </Drawer>
     </>
   );

@@ -15,6 +15,13 @@ export type DrawerOptions = DefaultOptions & {
   title: string;
 };
 
+export interface AlertBannerOptions {
+  open: boolean;
+  content: string;
+  type: string;
+  onClose: () => void;
+}
+
 export type LayoutOptions = DefaultOptions & {
   isBlurred?: boolean;
 };
