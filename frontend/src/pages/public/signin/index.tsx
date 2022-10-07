@@ -1,8 +1,9 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from '../../../components/Layout';
 import Button from '../../../components/Button';
+import AlertBanner, { AlertBannerState } from '../../../components/AlertBanner';
 
 import { Container } from './components';
 import { AuthContext } from '../../../context/auth';
@@ -12,7 +13,17 @@ import useService from '../../../services/http.service';
 const SigninPage = () => {
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-  const { actions: { fetchLogin }, result } = useService();
+  const { actions: { fetchLogin, setInitial }, result } = useService();
+  const [alert, setAlert] = useState<boolean>(false);
+  const [alertState, setAlertState] = useState<AlertBannerState>({
+    content: '',
+    type: 'info'
+  })
+
+  const closeErrorAlert = () => {
+    setInitial();
+    setAlert(false);
+  }
 
   const handleClick = () => fetchLogin();
 
@@ -20,6 +31,8 @@ const SigninPage = () => {
     if (result.error === '' && result.response !== null) {
       setAuth(result.response);
       navigate('/me', { replace: true });
+    } else if (result.error !== '' && result.response === null) {
+      setAlert(true);
     }
   }, [result]);
 
@@ -28,6 +41,14 @@ const SigninPage = () => {
       navigate('/me', { replace: true });
     }
   }, [auth]);
+
+  useEffect(() => {
+    if (!alert) return;
+    setAlertState({
+      content: result.error,
+      type: 'error'
+    });
+  }, [alert]);
 
   return (
     <Layout>
@@ -53,6 +74,12 @@ const SigninPage = () => {
           Tiktok
         </Button>
       </Container>
+      <AlertBanner
+        open={alert}
+        content={alertState.content}
+        type={alertState.type}
+        onClose={closeErrorAlert}
+      />
     </Layout>
   );
 };

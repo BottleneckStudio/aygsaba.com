@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Layout from '../../../components/Layout';
 import Drawer, { DrawerState } from '../../../components/Drawer';
+import AlertBanner, { AlertBannerState } from '../../../components/AlertBanner';
 
 import { AuthContext } from '../../../context/auth';
 import useService from '../../../services/http.service';
@@ -26,7 +27,7 @@ const MePage = () => {
   }
 
   // api service
-  const { actions: { getMessages }, result } = useService();
+  const { actions: { getMessages, setInitial }, result } = useService();
 
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [drawerState, setDrawerState] = useState<DrawerState>({
@@ -34,6 +35,16 @@ const MePage = () => {
     title: '',
     content: null
   });
+  const [alert, setAlert] = useState<boolean>(false);
+  const [alertState, setAlertState] = useState<AlertBannerState>({
+    content: '',
+    type: 'info'
+  })
+
+   const closeErrorAlert = () => {
+    setInitial();
+    setAlert(false);
+  }
 
   // closes drawer
   const closeDrawer = () => setDrawerState({
@@ -74,8 +85,18 @@ const MePage = () => {
   useEffect(() => {
     if (result.error === '' && result.response !== null && !result.loading) {
       setMessageList(result.response);
+    } else if (result.error !== '' && result.response === null) {
+      setAlert(true);
     }
   }, [result]);
+
+  useEffect(() => {
+    if (!alert) return;
+    setAlertState({
+      content: result.error,
+      type: 'error'
+    });
+  }, [alert]);
 
   return (
     <>
@@ -100,6 +121,12 @@ const MePage = () => {
       >
         {drawerState.content}
       </Drawer>
+      <AlertBanner
+        open={alert}
+        content={alertState.content}
+        type={alertState.type}
+        onClose={closeErrorAlert}
+      />
     </>
   );
 };
