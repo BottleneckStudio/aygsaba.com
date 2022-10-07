@@ -6,6 +6,7 @@ export interface DefaultOptions {
 
 export interface MessageItemOptions {
   message: Message;
+  onShare: (message: Message) => void;
 }
 
 export type DrawerOptions = DefaultOptions & {

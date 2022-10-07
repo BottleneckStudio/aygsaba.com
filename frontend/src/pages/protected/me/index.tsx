@@ -7,9 +7,10 @@ import Drawer from '../../../components/Drawer';
 import { AuthContext } from '../../../context/auth';
 import useService from '../../../services/http.service';
 import { Message } from '../../../types/models';
-import MessageItem from './message';
+import MessageItem from './messageItem';
 
 import CreateMessage from './createMessage';
+import ShareMessage from './shareMessage';
 
 import {
   MessageList,
@@ -24,17 +25,31 @@ const MePage = () => {
     navigate('/', { replace: true });
   }
 
-  const [showAddSubject, setShowAddSubject] = useState<boolean>(false);
-  const [messageList, setMessageList] = useState<Message[]>([]);
+  // api service
   const { actions: { getMessages }, result } = useService();
 
-  const handleShowSubjectForm = () => setShowAddSubject(true);
+  const [messageList, setMessageList] = useState<Message[]>([]);
+  const [drawerContent, setDrawerContent] = useState<React.ReactNode | null>(null);
+  const [drawerTitle, setDrawerTitle] = useState<string>('');
+  const [openDrawer, setOpenDrawer] = useState<boolean>(false);
 
-  const handleCloseSubjectForm = () => setShowAddSubject(false);
+  const closeDrawer = () => setOpenDrawer(false);
 
   const onCreateMessage = () => {
-    handleCloseSubjectForm();
+    closeDrawer();
     getMessages({ token: auth.token });
+  };
+
+  const openSubjectForm = () => {
+    setOpenDrawer(true);
+    setDrawerTitle('Create Message');
+    setDrawerContent(<CreateMessage onSubmit={onCreateMessage} />);
+  };
+
+  const openShareForm = (message: Message) => {
+    setOpenDrawer(true);
+    setDrawerTitle('Share Message');
+    setDrawerContent(<ShareMessage message={message} />);
   };
 
   useEffect(() => {
@@ -49,22 +64,26 @@ const MePage = () => {
 
   return (
     <>
-      <Layout isBlurred={showAddSubject}>
+      <Layout isBlurred={openDrawer}>
         <MessageList>
           {messageList.length > 0
             ? messageList.map(item => (
-              <MessageItem key={item.id} message={item} />
+              <MessageItem
+                key={item.id}
+                message={item}
+                onShare={openShareForm}
+              />
             ))
             : <>No result</>}
         </MessageList>
-        <FloatingButton onClick={handleShowSubjectForm} />
+        <FloatingButton onClick={openSubjectForm} />
       </Layout>
       <Drawer
-        open={showAddSubject}
-        onClose={handleCloseSubjectForm}
-        title="Create Message"
+        open={openDrawer}
+        onClose={closeDrawer}
+        title={drawerTitle}
       >
-        <CreateMessage onSubmit={onCreateMessage} />
+        {drawerContent}
       </Drawer>
     </>
   );

@@ -14,3 +14,20 @@ export const FormGroup = styled.div`
     }
   }
 `;
+
+export const ButtonGroup = styled.div`
+  display: flex;
+  align-items: center;
+
+  button {
+    margin: 0.625rem;
+  }
+
+  button:first-child {
+    margin-left: 0;
+  }
+
+  button:last-child {
+    margin-right: 0;
+  }
+`;
