@@ -14,7 +14,7 @@ import (
 	appRouter "org.aygsaba.com/src/api/router"
 	"org.aygsaba.com/src/datastore/inmemory"
 	"org.aygsaba.com/src/http/server"
-	"org.aygsaba.com/src/repository"
+	"org.aygsaba.com/src/repository/firebase"
 )
 
 var ctx = context.Background()
@@ -35,10 +35,10 @@ func Start(conf *config.Config) error {
 	// TODO:: replace this one
 	// with an actual DB.
 	memoryStore := inmemory.NewInmemoryStore()
-	authRepo := repository.NewAuth(memoryStore)
+	firebaseAuthRepo := firebase.NewFirebaseAuthRepository(memoryStore)
 
 	handler := appHandler.New(
-		appHandler.WithAuthRepository(authRepo),
+		appHandler.WithAuthRepository(firebaseAuthRepo),
 	)
 	handler.Initialize(router)
 

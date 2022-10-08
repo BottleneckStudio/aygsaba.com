@@ -20,7 +20,8 @@ type authRepository struct {
 	store datastore.Store
 }
 
-func NewAuth(store datastore.Store) Authorizer {
+// NewAuth is the default auth provider
+func NewAuth(store datastore.Store) *authRepository {
 	return &authRepository{
 		store,
 	}
