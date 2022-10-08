@@ -15,12 +15,34 @@ export const Container = styled.div<{ center: boolean }>`
   }
 `;
 
-export const UserImage = styled.img`
+export const UserImageButton = styled.button`
   display: block;
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 100%;
+  overflow: hidden;
+  padding: 0;
+`;
+
+export const UserImage = styled.img`
+  display: block;
+  height: 2.5rem;
+  width: 2.5rem;
   object-fit: cover;
+`;
+
+export const DrawerAccountImage = styled.img`
+  display: block;
+  height: 13.125rem;
+  width: 13.125rem;
+  object-fit: cover;
+  border-radius: 100%;
+  margin: 0 auto;
+`;
+
+export const DrawerAccountName = styled.p`
+  font-size: 1.875rem;
+  text-align: center;
 `;
 
 export const HeaderLogo = styled.img`

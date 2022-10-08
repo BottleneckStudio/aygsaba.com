@@ -11,6 +11,7 @@ import MessageItem from './messageItem';
 
 import CreateMessage from './createMessage';
 import ShareMessage from './shareMessage';
+import GenerateLink from './generateLink';
 
 import {
   MessageList,
@@ -57,11 +58,29 @@ const MePage = () => {
   };
 
   // opens share message form using the drawer
-  const openShareForm = (message: Message) => {
+  const openShareForm = (id: string) => {
     setDrawerState({
       isOpen: true,
       title: 'Share Message',
-      content: <ShareMessage message={message} />
+      content: <ShareMessage id={id} />
+    });
+  };
+
+  // opens generate link
+  const openLinkForm = (id: string) => {
+    setDrawerState({
+      isOpen: true,
+      title: 'Generate Link',
+      content: <GenerateLink id={id} />
+    });
+  };
+
+  // opens edit message form using the drawer
+  const openEditForm = (message: Message) => {
+    setDrawerState({
+      isOpen: true,
+      title: 'Create Message',
+      content: <CreateMessage editableMessage={message} onSubmit={onCreateMessage} />
     });
   };
 
@@ -87,6 +106,8 @@ const MePage = () => {
                 key={item.id}
                 message={item}
                 onShare={openShareForm}
+                onLink={openLinkForm}
+                onEdit={openEditForm}
               />
             ))
             : <>No result</>}

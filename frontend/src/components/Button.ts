@@ -3,17 +3,13 @@ import styled from 'styled-components';
 import colors from '../constants/colors';
 
 const Button = styled.button`
-  background-color: ${colors.gray};
+  background-color: ${colors.purple};
   padding: 0.625rem;
   border-radius: 6.25rem;
   color: ${colors.white};
   width: 14.375rem;
   font-size: 1.2rem;
   margin-bottom: 0.625rem;
-
-  &.black {
-    background-color: ${colors.black};
-  }
 
   &.facebook {
     background-color: ${colors.facebook};

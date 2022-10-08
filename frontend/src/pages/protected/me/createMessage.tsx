@@ -1,4 +1,5 @@
-import React, { FC, useState, useContext } from 'react';
+/* eslint-disable react/require-default-props */
+import React, { FC, useState, useContext, useEffect } from 'react';
 
 import { AuthContext } from '../../../context/auth';
 
@@ -12,7 +13,13 @@ import { Message } from '../../../types/models';
 import useService from '../../../services/http.service';
 import InputValidation from '../../../utils/input-validation';
 
-const CreateMessage: FC<{ onSubmit: () => void }> = ({ onSubmit }) => {
+const CreateMessage: FC<{
+  editableMessage?: Message;
+  onSubmit: () => void;
+}> = ({
+  editableMessage,
+  onSubmit
+}) => {
   const { auth } = useContext(AuthContext);
   const { actions: { createMessage } } = useService();
 
@@ -65,6 +72,12 @@ const CreateMessage: FC<{ onSubmit: () => void }> = ({ onSubmit }) => {
       ...message
     });
   };
+
+  useEffect(() => {
+    if (editableMessage !== null && editableMessage !== undefined) {
+      setMessage(editableMessage);
+    }
+  }, []);
 
   return (
     <>

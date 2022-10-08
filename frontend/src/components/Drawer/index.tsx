@@ -2,7 +2,12 @@
 import React, { FC, useState, useEffect } from 'react';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
-import { Container, Card, CardClose } from './components';
+import {
+  Container,
+  Card,
+  CardTitle,
+  CardClose
+} from './components';
 import { DrawerOptions } from '../../types/layout-options';
 
 export interface DrawerState {
@@ -49,7 +54,7 @@ const Drawer: FC<DrawerOptions> = ({
         <Container isVisible={showCard}>
           <Card isShown={showCard}>
             <div className="header">
-              <h2>{title}</h2>
+              <CardTitle>{title}</CardTitle>
               <CardClose onClick={onClose}>
                 <CloseRoundedIcon />
               </CardClose>

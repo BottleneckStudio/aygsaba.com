@@ -5,6 +5,7 @@ import devices from '../../../constants/devices';
 
 export const MessageList = styled.div`
   padding: 1.25rem;
+  padding-bottom: 6rem;
 
   @media ${devices.tablet} {
     width: 25rem;
@@ -12,76 +13,99 @@ export const MessageList = styled.div`
   }
 `;
 
-export const Message = styled.div`
-  border-radius: 0.5rem;
-  background-color: ${colors.silvergray};
-  position: relative;
+export const MessageUser = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
-  min-height: 12.5rem;
-  margin-bottom: 2rem;
+
+  img {
+    height: 2.188rem;
+    width: 2.188rem;
+    object-fit: cover;
+    border-radius: 100%;
+  }
+
+  p {
+    color: ${colors.black};
+    margin: 0;
+    margin-left: 0.625rem;
+  }
+`;
+
+export const Message = styled.div`
+  border-radius: 0.5rem;
+  background-color: ${colors.white};
+  box-shadow: 0 0.375rem 1.25rem ${colors.green15};
+  position: relative;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+
+  > p {
+    font-size: 1rem;
+    margin: 1.5rem 0;
+    color: ${colors.gray};
+  }
 `;
 
 export const MessageContent = styled.p`
   margin: 0;
   width: 100%;
   border-radius: 0.5rem;
-  background-color: ${colors.silvergray};
+  background-color: ${colors.white};
   padding: 3rem;
   color: ${colors.green};
   text-align: center;
   font-size: 2.5rem;
 `;
 
-export const MessageButton = styled.button<{ status: string }>`
-  border-radius: 6.25rem;
+export const MessageButtonGroup = styled.div`
+  height: 2.188rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const MessageStatus = styled.div<{ status: string }>`
   position: absolute;
-  bottom: -1.3rem;
-  padding: 0.75rem 1.5rem;
-  ${p => {
-    let style = '';
+  border-radius: 6.25rem;
+  background: ${colors.purple};
+  padding: 0.5rem 1rem;
+  width: auto;
+  display: flex;
+  align-items: center;
 
-    if (p.status === 'ready') {
-      style = `
-        background: ${colors.purple};
-        color: ${colors.white};
-        box-shadow: 0 0.25rem 0.625rem ${colors.black25};
-      `;
-    } else if (p.status === 'ongoing') {
-      style = `
-        background: ${colors.lightblue};
-        color: ${colors.white};
-        box-shadow: none;
-      `;
-    } else {
-      style = `
-        background: ${colors.disabledgray};
-        color: ${colors.black};
-        box-shadow: none;
-      `;
-    }
-
-    return style;
-  }}
-
-  > p {
-    font-size: 1.125rem;
+  span {
     display: flex;
     align-items: center;
-    margin: 0;
+    color: ${colors.white};
+  }
 
-    span.icon {
-      display: flex;
-      align-items: center;
-      margin-right: 0.313rem;
-    }
+  span.text {
+    margin-left: 0.313rem;
+  }
 
-    span.counter {
-      color: ${colors.navyblue};
-      font-size: 1.125rem;
-      margin: 0 1.2rem;
+  ${p => p.status === 'done' && `
+    background: ${colors.gray20};
+    box-shadow: none;
+
+    span {
+      color: ${colors.purple};
     }
+  `}
+`;
+
+export const MessageButton = styled.button`
+  height: 2.188rem;
+  width: 2.188rem;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${colors.purple};
+
+  span {
+    display: flex;
+    align-items: center;
+    color: ${colors.white};
   }
 `;
 
@@ -91,11 +115,11 @@ export const FloatingButton = styled.button`
   right: 1.25rem;
   height: 4.75rem;
   width: 4.75rem;
-  background-color: ${colors.black};
+  background-color: ${colors.purple};
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0.25rem 0.938rem ${colors.black40};
+  box-shadow: 0 0.25rem 0.938rem ${colors.green15};
   border-radius: 100%;
 
   &::before,

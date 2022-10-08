@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 
-export const Form = styled.form``;
+import colors from '../constants/colors';
 
 export const FormGroup = styled.div`
   margin-bottom: 1.25rem;
+
+  > p {
+    font-size: 0.813rem;
+    text-transform: uppercase;
+    color: ${colors.gray};
+  }
 
   &.flex-middle {
     display: flex;
