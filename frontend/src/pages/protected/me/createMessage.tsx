@@ -39,7 +39,12 @@ const CreateMessage: FC<{
     content: '',
     hideByView: false,
     limit: 5,
-    status: ''
+    status: '',
+    user: {
+      id: auth.id,
+      username: auth.username,
+      image: auth.image
+    }
   });
 
   const handleInputOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {

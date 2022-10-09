@@ -14,7 +14,8 @@ import {
   MessageButton,
   MessageStatus,
   MessageButtonGroup,
-  MessageUser
+  MessageUser,
+  MessageLink
 } from '../../../components/Message';
 
 import { AuthContext } from '../../../context/auth';
@@ -119,6 +120,9 @@ const MessageItem: FC<MessageItemOptions> = ({
 
   return (
     <Message>
+      {message.status !== 'ready' && (
+        <MessageLink to={`/message/${message.id}`} />
+      )}
       <MessageUser>
         <img src={auth.image} alt="user" />
         <p>

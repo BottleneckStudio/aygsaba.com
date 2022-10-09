@@ -61,7 +61,10 @@ const MePage = () => {
   // callback when successfully created message
   const onCreateMessage = () => {
     closeDrawer();
-    getMessages({ token: auth.token });
+    getMessages({
+      token: auth.token,
+      id: auth.id
+    });
   };
 
   // opens create message form using the drawer
@@ -115,7 +118,10 @@ const MePage = () => {
 
   // gets all the messages
   useEffect(() => {
-    getMessages({ token: auth.token });
+    getMessages({
+      token: auth.token,
+      id: auth.id
+    });
   }, []);
 
   // sets fetchted messages to local state

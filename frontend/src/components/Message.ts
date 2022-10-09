@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import colors from '../constants/colors';
 import devices from '../constants/devices';
@@ -16,6 +17,8 @@ export const MessageList = styled.div`
 export const MessageUser = styled.div`
   display: flex;
   align-items: center;
+  padding: 1.25rem;
+  padding-bottom: 0;
 
   img {
     height: 2.188rem;
@@ -37,19 +40,28 @@ export const Message = styled.div`
   box-shadow: 0 0.375rem 1.25rem ${colors.green15};
   position: relative;
   margin-bottom: 1.5rem;
-  padding: 1.25rem;
+  padding-bottom: 1.25rem;
+  position: relative;
 
   > p {
     font-size: 1rem;
     margin: 1.5rem 0;
     color: ${colors.gray};
+    padding: 0 1.25rem;
   }
+`;
+
+export const MessageLink = styled(Link)`
+  display: block;
+  position: absolute;
+  min-height: calc(100% - 3.75rem);
+  width: 100%;
+  background-color transparent;
 `;
 
 export const MessageContent = styled.div<{ isBlurred: boolean }>`
   margin: 0;
   width: 100%;
-  border-radius: 0.5rem;
   padding: 3rem;
   text-align: center;
   background-image: linear-gradient(45deg, ${colors.green}, ${colors.purple});
@@ -76,10 +88,11 @@ export const MessageContent = styled.div<{ isBlurred: boolean }>`
 `;
 
 export const MessageButtonGroup = styled.div`
-  height: 2.188rem;
+  height: 2.375rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1.25rem;
 `;
 
 export const MessageStatus = styled.div<{ status: string }>`

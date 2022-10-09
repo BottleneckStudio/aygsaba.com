@@ -4,6 +4,7 @@ import { DefaultOptions } from '../types/layout-options';
 import { Auth } from '../types/models';
 
 const initialState: Auth = {
+  id: '',
   token: '',
   username: '',
   image: ''

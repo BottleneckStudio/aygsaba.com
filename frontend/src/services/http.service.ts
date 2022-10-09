@@ -22,11 +22,21 @@ const useService = () => {
     .finally(() => setLoading(false));
   }, []);
 
-  const getMessages = useCallback(({ token }: { token: string }) => {
+  const getMessages = useCallback(({ token, id }: { token: string, id: string }) => {
     axios.get(`/api${endpoints.messages}`, {
-      headers: { token }
+      headers: { token },
+      params: { id }
     })
     .then(res => setResponse(res.data as Message[]))
+    .catch(err => setError(err.message))
+    .finally(() => setLoading(false));
+  }, []);
+
+  const getMessage = useCallback(({ id, token }: { id: string, token: string }) => {
+    axios.get(`/api${endpoints.messages}/${id}`, {
+      headers: { token }
+    })
+    .then(res => setResponse(res.data as Message))
     .catch(err => setError(err.message))
     .finally(() => setLoading(false));
   }, []);
@@ -48,6 +58,7 @@ const useService = () => {
     actions: {
       fetchLogin,
       getMessages,
+      getMessage,
       createMessage,
       setInitial
     },
