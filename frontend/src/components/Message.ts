@@ -47,8 +47,9 @@ export const Message = styled.div`
 `;
 
 export const MessageContent = styled.div<{ isBlurred: boolean }>`
-  margin: 0 -1.25rem;
-  width: 115.6%;
+  margin: 0;
+  width: 100%;
+  border-radius: 0.5rem;
   padding: 3rem;
   text-align: center;
   background-image: linear-gradient(45deg, ${colors.green}, ${colors.purple});
