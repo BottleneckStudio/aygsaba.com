@@ -9,6 +9,7 @@ const LogoutPage = () => {
 
   useEffect(() => {
     setAuth({
+      id: '',
       token: '',
       username: '',
       image: ''

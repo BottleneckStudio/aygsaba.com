@@ -20,7 +20,7 @@ export const Container = styled.div<{ isOpen: boolean, type: string }>`
       return `background-color: ${colors.red};`;
     }
 
-    return `background-color: ${colors.lightblue};`;
+    return `background-color: ${colors.green};`;
   }}
 `;
 
@@ -28,7 +28,7 @@ export const BannerClose = styled.button`
   height: 2rem;
   width: 2rem;
   border-radius: 100%;
-  background-color: ${colors.black40};
+  background-color: ${colors.gray20};
   padding: 0.313rem;
   display: flex;
   align-items: center;

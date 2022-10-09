@@ -4,18 +4,20 @@ import type { LayoutOptions } from '../../types/layout-options';
 
 import Header from '../Header';
 
-import { Container, Content } from './components';
+import { Content } from './components';
+import DefaultLayout from './default';
 
 const Layout: FC<LayoutOptions> = ({
   children,
-  isBlurred
+  isBlurred,
+  onUserClick
 }) => (
-  <Container isBlurred={isBlurred ?? false}>
-    <Header />
+  <DefaultLayout isBlurred={isBlurred ?? false}>
+    <Header onUserClick={onUserClick} />
     <Content>
       {children}
     </Content>
-  </Container>
+  </DefaultLayout>
 );
 
 export default Layout;

@@ -3,18 +3,22 @@ import styled from 'styled-components';
 import colors from '../constants/colors';
 
 export const Input = styled.input`
-  border: 0.063rem solid ${colors.silvergray};
+  border: 0.063rem solid ${colors.gray20};
   padding: 1.25rem;
   border-radius: 0.5rem;
-  background-color: ${colors.silvergray};
+  background-color: ${colors.white};
   font-size: 1.125rem;
+
+  &:disabled {
+    background-color: ${colors.gray20};
+  }
 `;
 
 export const Textarea = styled.textarea`
-  border: 0.063rem solid ${colors.silvergray};
+  border: 0.063rem solid ${colors.gray20};
   padding: 1.25rem;
   border-radius: 0.5rem;
-  background-color: ${colors.silvergray};
+  background-color: ${colors.white};
   font-size: 1.125rem;
   resize: none;
 `;

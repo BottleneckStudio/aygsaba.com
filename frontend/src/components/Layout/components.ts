@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import devices from '../../constants/devices';
 
 export const Container = styled.div<{ isBlurred: boolean }>`
-  background: #fff;
   margin: 0 auto;
   transition: 0.3s all ease-in-out;
+
   ${p => p.isBlurred && `
     filter: blur(0.25rem);
     overflow: hidden;

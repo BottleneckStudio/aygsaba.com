@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../../../components/Layout';
 import Drawer, { DrawerState } from '../../../components/Drawer';
 import AlertBanner, { AlertBannerState } from '../../../components/AlertBanner';
+import { MessageList } from '../../../components/Message';
 
 import { AuthContext } from '../../../context/auth';
 import useService from '../../../services/http.service';
@@ -12,9 +13,10 @@ import MessageItem from './messageItem';
 
 import CreateMessage from './createMessage';
 import ShareMessage from './shareMessage';
+import GenerateLink from './generateLink';
+import Account from './account';
 
 import {
-  MessageList,
   FloatingButton
 } from './components';
 
@@ -41,7 +43,8 @@ const MePage = () => {
     type: 'info'
   })
 
-   const closeErrorAlert = () => {
+  // close error
+  const closeErrorAlert = () => {
     setInitial();
     setAlert(false);
   }
@@ -52,10 +55,16 @@ const MePage = () => {
     isOpen: false
   });
 
+  // logout user
+  const logoutUser = () => navigate('/logout', { replace: true });
+
   // callback when successfully created message
   const onCreateMessage = () => {
     closeDrawer();
-    getMessages({ token: auth.token });
+    getMessages({
+      token: auth.token,
+      id: auth.id
+    });
   };
 
   // opens create message form using the drawer
@@ -68,17 +77,51 @@ const MePage = () => {
   };
 
   // opens share message form using the drawer
-  const openShareForm = (message: Message) => {
+  const openShareForm = (id: string) => {
     setDrawerState({
       isOpen: true,
       title: 'Share Message',
-      content: <ShareMessage message={message} />
+      content: <ShareMessage id={id} />
+    });
+  };
+
+  // opens generate link
+  const openLinkForm = (id: string) => {
+    setDrawerState({
+      isOpen: true,
+      title: 'Generate Link',
+      content: <GenerateLink id={id} />
+    });
+  };
+
+  // opens edit message form using the drawer
+  const openEditForm = (message: Message) => {
+    setDrawerState({
+      isOpen: true,
+      title: 'Create Message',
+      content: <CreateMessage editableMessage={message} onSubmit={onCreateMessage} />
+    });
+  };
+
+  // opens account formm using the drawer
+  const openAccount = () => {
+    setDrawerState({
+      isOpen: true,
+      title: 'Account',
+      content: (
+        <Account
+          onLogout={logoutUser}
+        />
+      )
     });
   };
 
   // gets all the messages
   useEffect(() => {
-    getMessages({ token: auth.token });
+    getMessages({
+      token: auth.token,
+      id: auth.id
+    });
   }, []);
 
   // sets fetchted messages to local state
@@ -100,7 +143,10 @@ const MePage = () => {
 
   return (
     <>
-      <Layout isBlurred={drawerState.isOpen}>
+      <Layout
+        isBlurred={drawerState.isOpen}
+        onUserClick={openAccount}
+      >
         <MessageList>
           {messageList.length > 0
             ? messageList.map(item => (
@@ -108,6 +154,8 @@ const MePage = () => {
                 key={item.id}
                 message={item}
                 onShare={openShareForm}
+                onLink={openLinkForm}
+                onEdit={openEditForm}
               />
             ))
             : <>No result</>}

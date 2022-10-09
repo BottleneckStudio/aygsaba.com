@@ -6,6 +6,7 @@ import AuthProvider from './context/auth';
 
 import SigninPage from './pages/public/signin';
 import MePage from './pages/protected/me';
+import MessagePage from './pages/public/message';
 import LogoutPage from './pages/public/logout';
 import worker from './mocks/browser';
 
@@ -21,6 +22,7 @@ const App = () => (
         <Route path="/" element={<SigninPage />} />
         <Route path="/me" element={<MePage />} />
         <Route path="/logout" element={<LogoutPage />} />
+        <Route path="/message/:id" element={<MessagePage />} />
       </Routes>
     </BrowserRouter>
   </AuthProvider>

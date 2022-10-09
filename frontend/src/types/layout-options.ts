@@ -6,7 +6,9 @@ export interface DefaultOptions {
 
 export interface MessageItemOptions {
   message: Message;
-  onShare: (message: Message) => void;
+  onShare: (id: string) => void;
+  onLink: (id: string) => void;
+  onEdit: (message: Message) => void;
 }
 
 export type DrawerOptions = DefaultOptions & {
@@ -24,4 +26,5 @@ export interface AlertBannerOptions {
 
 export type LayoutOptions = DefaultOptions & {
   isBlurred?: boolean;
+  onUserClick: () => void;
 };

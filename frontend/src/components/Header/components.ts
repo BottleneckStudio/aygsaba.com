@@ -15,11 +15,19 @@ export const Container = styled.div<{ center: boolean }>`
   }
 `;
 
-export const UserImage = styled.img`
+export const UserImageButton = styled.button`
   display: block;
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 100%;
+  overflow: hidden;
+  padding: 0;
+`;
+
+export const UserImage = styled.img`
+  display: block;
+  height: 2.5rem;
+  width: 2.5rem;
   object-fit: cover;
 `;
 

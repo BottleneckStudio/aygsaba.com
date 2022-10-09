@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 
-export const Form = styled.form``;
+import colors from '../constants/colors';
 
 export const FormGroup = styled.div`
   margin-bottom: 1.25rem;
+
+  > p {
+    font-size: 0.813rem;
+    text-transform: uppercase;
+    color: ${colors.gray};
+  }
 
   &.flex-middle {
     display: flex;
@@ -20,7 +26,7 @@ export const ButtonGroup = styled.div`
   align-items: center;
 
   button {
-    margin: 0.625rem;
+    margin: 0.313rem;
   }
 
   button:first-child {

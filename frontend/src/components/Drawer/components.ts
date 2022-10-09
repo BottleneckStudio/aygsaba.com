@@ -5,7 +5,7 @@ import colors from '../../constants/colors';
 import devices from '../../constants/devices';
 
 export const Container = styled.div<{ isVisible: boolean }>`
-  background-color: ${p => p.isVisible ? colors.black40 : 'transparent'};
+  background-color: ${p => p.isVisible ? colors.purple25 : 'transparent'};
   position: fixed;
   top: 0;
   bottom: 0;
@@ -14,6 +14,7 @@ export const Container = styled.div<{ isVisible: boolean }>`
   height: 100vh;
   width: 100vw;
   transition: 0.3s all ease-in-out;
+  z-index: 100;
 `;
 
 export const Card = styled.div<{ isShown: boolean }>`
@@ -46,13 +47,17 @@ export const Card = styled.div<{ isShown: boolean }>`
     max-height: calc(100vh - 10rem);
     overflow-y: auto;
   }
+`;
 
+export const CardTitle = styled.h2`
+  text-transform: uppercase;
 `;
 
 export const CardClose = styled.button`
   height: 2.5rem;
   width: 2.5rem;
-  background-color: ${colors.silvergray};
+  background-color: ${colors.purple};
+  color: ${colors.white};
   border-radius: 100%;
   display: flex;
   align-items: center;
