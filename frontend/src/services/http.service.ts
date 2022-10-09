@@ -9,10 +9,16 @@ const useService = () => {
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
+  const setInitial = useCallback(() => {
+    setResponse(null);
+    setError('');
+    setLoading(true);
+  }, []);
+
   const fetchLogin = useCallback(() => {
     axios.post(`/api${endpoints.signin}`)
     .then(res => setResponse(res.data as Auth))
-    .catch(err => setError(err))
+    .catch(err => setError(err.message))
     .finally(() => setLoading(false));
   }, []);
 
@@ -21,7 +27,7 @@ const useService = () => {
       headers: { token }
     })
     .then(res => setResponse(res.data as Message[]))
-    .catch(err => setError(err))
+    .catch(err => setError(err.message))
     .finally(() => setLoading(false));
   }, []);
 
@@ -34,7 +40,7 @@ const useService = () => {
       { headers: { token } }
     )
     .then(res => setResponse(res.data as Message[]))
-    .catch(err => setError(err))
+    .catch(err => setError(err.message))
     .finally(() => setLoading(false));
   }, []);
 
@@ -42,7 +48,8 @@ const useService = () => {
     actions: {
       fetchLogin,
       getMessages,
-      createMessage
+      createMessage,
+      setInitial
     },
     result: {
       response,

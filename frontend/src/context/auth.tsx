@@ -28,7 +28,7 @@ const AuthProvider: FC<DefaultOptions> = ({ children }) => {
 
   useEffect(() => {
     localStorage.setItem('auth', JSON.stringify(auth));
-  }, []);
+  }, [auth]);
 
   const value = useMemo(() => ({ auth, setAuth }), [auth]);
 
