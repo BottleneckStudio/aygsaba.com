@@ -59,7 +59,7 @@ export const MessageContent = styled.div<{ isBlurred: boolean }>`
   > p {
     font-size: 2.5rem;
     color: ${colors.white};
-    ${p => p.isBlurred && 'filter: blur(0.25rem);'}
+    ${p => p.isBlurred && 'filter: blur(0.5rem);'}
   }
 
   ${p => p.isBlurred && `
