@@ -1,11 +1,16 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import TouchAppRoundedIcon from '@mui/icons-material/TouchAppRounded';
 
-import Layout from '../../../components/Layout';
+import AygsabaLogo from '../../../assets/images/aygsaba-logo.svg';
+
+import DefaultLayout from '../../../components/Layout/default';
 import Button from '../../../components/Button';
 import AlertBanner, { AlertBannerState } from '../../../components/AlertBanner';
+import Drawer from '../../../components/Drawer';
+import { FormGroup, ButtonGroup } from '../../../components/Form';
 
-import { Container } from './components';
+import { Container, Logo, StartButton } from './components';
 import { AuthContext } from '../../../context/auth';
 
 import useService from '../../../services/http.service';
@@ -19,6 +24,7 @@ const SigninPage = () => {
     content: '',
     type: 'info'
   })
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const closeErrorAlert = () => {
     setInitial();
@@ -51,36 +57,56 @@ const SigninPage = () => {
   }, [alert]);
 
   return (
-    <Layout>
-      <Container>
-        <h2>Sign in with</h2>
-        <Button
-          className="facebook"
-          data-testid="button-facebook"
-          onClick={handleClick}
-        >
-          Facebook
-        </Button>
-        <Button
-          className="twitter"
-          data-testid="button-twitter"
-        >
-          Twitter
-        </Button>
-        <Button
-          className="tiktok"
-          data-testid="button-tiktok"
-        >
-          Tiktok
-        </Button>
-      </Container>
+    <>
+      <DefaultLayout
+        isBlurred={isDrawerOpen}
+      >
+        <Container>
+          <Logo src={AygsabaLogo} alt="aygsaba" />
+          <StartButton onClick={() => setIsDrawerOpen(true)}>
+            <TouchAppRoundedIcon />
+            <span>
+              Click to start
+            </span>
+          </StartButton>
+        </Container>
+      </DefaultLayout>
+      <Drawer
+        open={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        title="Sign in with"
+      >
+        <FormGroup>
+          <ButtonGroup>
+            <Button
+              className="facebook width100"
+              data-testid="button-facebook"
+              onClick={handleClick}
+            >
+              Facebook
+            </Button>
+            <Button
+              className="twitter width100"
+              data-testid="button-twitter"
+            >
+              Twitter
+            </Button>
+            <Button
+              className="tiktok width100"
+              data-testid="button-tiktok"
+            >
+              Tiktok
+            </Button>
+          </ButtonGroup>
+        </FormGroup>
+      </Drawer>
       <AlertBanner
         open={alert}
         content={alertState.content}
         type={alertState.type}
         onClose={closeErrorAlert}
       />
-    </Layout>
+    </>
   );
 };
 

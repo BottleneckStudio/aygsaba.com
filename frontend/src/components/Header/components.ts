@@ -31,20 +31,6 @@ export const UserImage = styled.img`
   object-fit: cover;
 `;
 
-export const DrawerAccountImage = styled.img`
-  display: block;
-  height: 13.125rem;
-  width: 13.125rem;
-  object-fit: cover;
-  border-radius: 100%;
-  margin: 0 auto;
-`;
-
-export const DrawerAccountName = styled.p`
-  font-size: 1.875rem;
-  text-align: center;
-`;
-
 export const HeaderLogo = styled.img`
   margin: 0;
   height: 1.875rem;

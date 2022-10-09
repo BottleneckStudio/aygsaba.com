@@ -26,7 +26,7 @@ export const ButtonGroup = styled.div`
   align-items: center;
 
   button {
-    margin: 0.625rem;
+    margin: 0.313rem;
   }
 
   button:first-child {

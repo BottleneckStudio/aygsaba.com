@@ -26,4 +26,5 @@ export interface AlertBannerOptions {
 
 export type LayoutOptions = DefaultOptions & {
   isBlurred?: boolean;
+  onUserClick: () => void;
 };

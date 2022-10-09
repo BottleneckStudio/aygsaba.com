@@ -15,7 +15,7 @@ import {
   MessageStatus,
   MessageButtonGroup,
   MessageUser
-} from './components';
+} from '../../../components/Message';
 
 import { AuthContext } from '../../../context/auth';
 

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../../../components/Layout';
 import Drawer, { DrawerState } from '../../../components/Drawer';
 import AlertBanner, { AlertBannerState } from '../../../components/AlertBanner';
+import { MessageList } from '../../../components/Message';
 
 import { AuthContext } from '../../../context/auth';
 import useService from '../../../services/http.service';
@@ -13,9 +14,9 @@ import MessageItem from './messageItem';
 import CreateMessage from './createMessage';
 import ShareMessage from './shareMessage';
 import GenerateLink from './generateLink';
+import Account from './account';
 
 import {
-  MessageList,
   FloatingButton
 } from './components';
 
@@ -42,7 +43,8 @@ const MePage = () => {
     type: 'info'
   })
 
-   const closeErrorAlert = () => {
+  // close error
+  const closeErrorAlert = () => {
     setInitial();
     setAlert(false);
   }
@@ -52,6 +54,9 @@ const MePage = () => {
     ...drawerState,
     isOpen: false
   });
+
+  // logout user
+  const logoutUser = () => navigate('/logout', { replace: true });
 
   // callback when successfully created message
   const onCreateMessage = () => {
@@ -95,6 +100,19 @@ const MePage = () => {
     });
   };
 
+  // opens account formm using the drawer
+  const openAccount = () => {
+    setDrawerState({
+      isOpen: true,
+      title: 'Account',
+      content: (
+        <Account
+          onLogout={logoutUser}
+        />
+      )
+    });
+  };
+
   // gets all the messages
   useEffect(() => {
     getMessages({ token: auth.token });
@@ -119,7 +137,10 @@ const MePage = () => {
 
   return (
     <>
-      <Layout isBlurred={drawerState.isOpen}>
+      <Layout
+        isBlurred={drawerState.isOpen}
+        onUserClick={openAccount}
+      >
         <MessageList>
           {messageList.length > 0
             ? messageList.map(item => (
