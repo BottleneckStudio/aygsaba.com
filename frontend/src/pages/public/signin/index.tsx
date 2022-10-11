@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TouchAppRoundedIcon from '@mui/icons-material/TouchAppRounded';
+import { IResolveParams } from 'reactjs-social-login';
 
 import AygsabaLogo from '../../../assets/images/aygsaba-logo.svg';
 import useService from '../../../services/http.service';
@@ -19,7 +20,7 @@ import FacebookButton from './socialButton';
 const SigninPage = () => {
   const navigate = useNavigate();
   const { auth, setAuth } = useContext(AuthContext);
-  const { actions: { fetchLogin, setInitial }, result } = useService();
+  const { actions: { loginUser, setInitial }, result } = useService();
   const [alert, setAlert] = useState<boolean>(false);
   const [alertState, setAlertState] = useState<AlertBannerState>({
     content: '',
@@ -32,7 +33,28 @@ const SigninPage = () => {
     setAlert(false);
   }
 
-  const handleClick = () => fetchLogin();
+  const handleClick = () => loginUser({
+    token: auth.token
+  });
+
+  const handleFacebookLogin = (res: IResolveParams) => {
+    console.log(res);
+    loginUser({ token: res.data?.accessToken });
+    // setAuth({
+      // id: res.data?.id,
+      // token: res.data?.accessToken,
+      // username: res.data?.email,
+      // image: res.data?.picture?.data?.url
+    // });
+  };
+
+  const handleFacebookReject = () => {
+    setAlert(true);
+    setAlertState({
+      content: 'Facebook login failed',
+      type: 'error'
+    });
+  };
 
   useEffect(() => {
     if (result.error === '' && result.response !== null) {
@@ -79,7 +101,10 @@ const SigninPage = () => {
       >
         <FormGroup>
           <ButtonGroup>
-            <FacebookButton />
+            <FacebookButton
+              onResolve={handleFacebookLogin}
+              onReject={handleFacebookReject}
+            />
             <Button
               className="twitter width100"
               data-testid="button-twitter"

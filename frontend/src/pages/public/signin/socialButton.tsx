@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-import { LoginSocialFacebook } from 'reactjs-social-login';
+import {
+  LoginSocialFacebook,
+  IResolveParams
+} from 'reactjs-social-login';
 
 import Button from '../../../components/Button';
 
-const FacebookButton = () => (
+const FacebookButton: FC<{
+  onResolve: (res: IResolveParams) => void;
+  onReject: () => void;
+}> = ({
+  onResolve,
+  onReject
+}) => (
   <LoginSocialFacebook
     appId="3250730951832755"
-    onReject={() => console.log('rejected')}
-    // TODO: handle resolve to redirect to api
-    onResolve={res => console.log(res)}
+    onReject={onReject}
+    onResolve={onResolve}
   >
     <Button
       className="facebook width100"

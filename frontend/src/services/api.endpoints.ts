@@ -1,5 +1,5 @@
 const endpoints = {
-  baseUrl: `${process.env.NODE_API_DOMAIN as string}/api`,
+  baseUrl: 'https://41b9973671318e.lhr.life',
   signin: '/signin',
   messages: '/messages'
 };
