@@ -1,16 +1,17 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Layout from '../../../components/Layout';
 import Drawer, { DrawerState } from '../../../components/Drawer';
-import AlertBanner, { AlertBannerState } from '../../../components/AlertBanner';
+import AlertBanner from '../../../components/AlertBanner';
 import { MessageList } from '../../../components/Message';
 
 import { AuthContext } from '../../../context/auth';
 import useService from '../../../services/http.service';
 import { Message } from '../../../types/models';
-import MessageItem from './messageItem';
 
+import MessageItem from './messageItem';
 import CreateMessage from './createMessage';
 import ShareMessage from './shareMessage';
 import GenerateLink from './generateLink';
@@ -37,11 +38,9 @@ const MePage = () => {
     title: '',
     content: null
   });
+
   const [alert, setAlert] = useState<boolean>(false);
-  const [alertState, setAlertState] = useState<AlertBannerState>({
-    content: '',
-    type: 'info'
-  })
+  const [alertContent, setAlertContent] = useState<string>('');
 
   // close error
   const closeErrorAlert = () => {
@@ -59,12 +58,30 @@ const MePage = () => {
   const logoutUser = () => navigate('/logout', { replace: true });
 
   // callback when successfully created message
-  const onCreateMessage = () => {
+  const onCreateMessage = async () => {
     closeDrawer();
-    getMessages({
-      token: auth.token,
-      id: auth.id
-    });
+    try {
+      await getMessages({
+        token: auth.token,
+        userId: auth.id
+      });
+    } catch (err) {
+      setAlert(true);
+      setAlertContent('Error creating message');
+    }
+  };
+
+  // get user messages
+  const fetchUserMessage = async () => {
+    try {
+      await getMessages({
+        token: auth.token,
+        userId: auth.id
+      });
+    } catch (err) {
+      setAlert(true);
+      setAlertContent('Error fetching user messages');
+    }
   };
 
   // opens create message form using the drawer
@@ -118,10 +135,7 @@ const MePage = () => {
 
   // gets all the messages
   useEffect(() => {
-    getMessages({
-      token: auth.token,
-      id: auth.id
-    });
+   void fetchUserMessage();
   }, []);
 
   // sets fetchted messages to local state
@@ -130,16 +144,9 @@ const MePage = () => {
       setMessageList(result.response);
     } else if (result.error !== '' && result.response === null) {
       setAlert(true);
+      setAlertContent(result.error);
     }
   }, [result]);
-
-  useEffect(() => {
-    if (!alert) return;
-    setAlertState({
-      content: result.error,
-      type: 'error'
-    });
-  }, [alert]);
 
   return (
     <>
@@ -171,8 +178,8 @@ const MePage = () => {
       </Drawer>
       <AlertBanner
         open={alert}
-        content={alertState.content}
-        type={alertState.type}
+        content={alertContent}
+        type="error"
         onClose={closeErrorAlert}
       />
     </>

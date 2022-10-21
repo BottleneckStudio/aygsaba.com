@@ -3,6 +3,12 @@ import axios from 'axios';
 
 import endpoints from './api.endpoints';
 import { Auth, Message } from '../types/models';
+import {
+  LoginPayloadType,
+  GetUserMessagePayloadType,
+  GetMessagePayloadType,
+  CreateMessagePayloadType
+} from '../types/payloads';
 
 const useService = () => {
   const [response, setResponse] = useState<any | null>(null);
@@ -15,47 +21,105 @@ const useService = () => {
     setLoading(true);
   }, []);
 
-  const loginUser = useCallback(({ token }: { token: string }) => {
-    axios.get(`${endpoints.baseUrl}/api/v1/test`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(res => setResponse(res.data as Auth))
-    .catch(err => setError(err.message))
-    .finally(() => setLoading(false));
+  const loginUser = useCallback(async (
+    login: LoginPayloadType
+  ) => {
+    const { token } = login;
+
+    try {
+      const res = await axios.get(
+        `${endpoints.baseUrl}/api/v1/test`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      setResponse(res.data as Auth);
+      setLoading(false);
+    } catch (err) {
+      setError('Error logging in user');
+      setLoading(false);
+    }
   }, []);
 
-  const getMessages = useCallback(({ token, id }: { token: string, id: string }) => {
-    axios.get(`/api${endpoints.messages}`, {
-      headers: { token },
-      params: { id }
-    })
-    .then(res => setResponse(res.data as Message[]))
-    .catch(err => setError(err.message))
-    .finally(() => setLoading(false));
+  const getMessages = useCallback(async (
+    userMessagePayload: GetUserMessagePayloadType
+  ) => {
+    const { token, userId } = userMessagePayload;
+
+    try {
+      const res = await axios.get(
+        `${endpoints.baseUrl}/api/v1${endpoints.messages}`,
+        {
+          headers: { token },
+          params: { id: userId }
+        }
+      );
+
+      setResponse(res.data as Message[]);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed fetching messages');
+      setLoading(false);
+    }
   }, []);
 
-  const getMessage = useCallback(({ id, token }: { id: string, token: string }) => {
-    axios.get(`/api${endpoints.messages}/${id}`, {
-      headers: { token }
-    })
-    .then(res => setResponse(res.data as Message))
-    .catch(err => setError(err.message))
-    .finally(() => setLoading(false));
+  const getMessage = useCallback(async (
+    getMessagePayload: GetMessagePayloadType
+  ) => {
+    const { token, id } = getMessagePayload;
+
+    try {
+      const res = await axios.get(
+        `${endpoints.baseUrl}/api/v1${endpoints.messages}/${id}`,
+        {
+          headers: { token }
+        }
+      );
+
+      setResponse(res.data as Message);
+      setLoading(false);
+    } catch (err) {
+      setError('Error fetching user messages');
+      setLoading(false);
+    }
   }, []);
 
-  const createMessage = useCallback((message: Message & { token: string }) => {
-    const { token } = message;
+  const createMessage = useCallback(async (
+    createMessagePayload: CreateMessagePayloadType
+  ) => {
+    const {
+      token,
+      title,
+      content,
+      hideByView,
+      limit,
+      status,
+      user
+    } = createMessagePayload;
 
-    axios.post(
-      `/api${endpoints.messages}`,
-      message,
-      { headers: { token } }
-    )
-    .then(res => setResponse(res.data as Message[]))
-    .catch(err => setError(err.message))
-    .finally(() => setLoading(false));
+    try {
+      const res = await axios.post(
+        `/api${endpoints.messages}`,
+        {
+          title,
+          content,
+          hideByView,
+          limit,
+          status,
+          user
+        },
+        { headers: { token } }
+      );
+
+      setResponse(res.data as Message[]);
+      setLoading(false);
+    } catch (err) {
+      setError('Error creating message');
+      setLoading(false);
+    }
   }, []);
 
   return {
