@@ -1,0 +1,6 @@
+dbs:
+  - path: /data/db
+    replicas:
+      - url: ${REPLICA_URL}
+        type: s3
+        region: ap-southeast-1

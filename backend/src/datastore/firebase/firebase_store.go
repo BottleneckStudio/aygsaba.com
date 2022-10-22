@@ -23,9 +23,9 @@ var ctx = context.Background()
 // The data is saved in firebase's User pool.
 // We don't user firestore in this case.
 type FirebaseStore struct {
-	firebaseCtx    context.Context
-	firebaseApp    *firebase.App
-	firebaseClient *auth.Client
+	FirebaseCtx    context.Context
+	FirebaseApp    *firebase.App
+	FirebaseClient *auth.Client
 }
 
 // NewFirebaseStore
@@ -45,9 +45,9 @@ func NewFirebaseStore(configJSON string) (datastore.Store, error) {
 	}
 
 	return &FirebaseStore{
-		firebaseCtx:    ctx,
-		firebaseApp:    app,
-		firebaseClient: client,
+		FirebaseCtx:    ctx,
+		FirebaseApp:    app,
+		FirebaseClient: client,
 	}, nil
 }
 
@@ -58,11 +58,11 @@ func (fs *FirebaseStore) Get(key string) ([]byte, error) {
 	// this case `key` is the uid.
 	fetchedUser := &auth.UserRecord{}
 
-	fetchedUser, err := fs.firebaseClient.GetUser(fs.firebaseCtx, key)
+	fetchedUser, err := fs.FirebaseClient.GetUser(fs.FirebaseCtx, key)
 	if err != nil {
 		if auth.IsUserNotFound(err) {
 			// this time, `key` would be the user's email address.
-			fetchedUser, err = fs.firebaseClient.GetUserByEmail(fs.firebaseCtx, key)
+			fetchedUser, err = fs.FirebaseClient.GetUserByEmail(fs.FirebaseCtx, key)
 			if err != nil {
 				return nil, err
 			}
@@ -93,7 +93,7 @@ func (fs *FirebaseStore) Set(key string, val []byte, exp time.Duration) error {
 		return err
 	}
 
-	_, err := fs.firebaseClient.CreateUser(fs.firebaseCtx, userToCreate)
+	_, err := fs.FirebaseClient.CreateUser(fs.FirebaseCtx, userToCreate)
 	if err != nil {
 		return err
 	}
@@ -108,7 +108,7 @@ func (fs *FirebaseStore) Delete(key string) error {
 		return errors.New("key empty")
 	}
 
-	return fs.firebaseClient.DeleteUser(fs.firebaseCtx, key)
+	return fs.FirebaseClient.DeleteUser(fs.FirebaseCtx, key)
 }
 
 // Reset resets the storage and delete all keys.

@@ -20,5 +20,4 @@ func (h *Handler) Initialize(r *router.AppRouter) {
 		return c.JSON(http.StatusOK, "OK")
 	}).Name = "health-check"
 
-	r.GET("/auth/firebase", h.FirebaseAuth)
 }

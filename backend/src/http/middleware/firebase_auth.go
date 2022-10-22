@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -24,7 +23,6 @@ func FirebaseAuth(fStore *firebase.FirebaseStore) echo.MiddlewareFunc {
 				return c.JSON(http.StatusUnauthorized, errors.New("missing or invalid auth token"))
 			}
 
-			fmt.Println("Bearer Token Passed: ", idToken)
 			token, err := authClient.VerifyIDToken(rCtx, idToken)
 			if err != nil {
 				return c.JSON(http.StatusUnauthorized, err.Error())
