@@ -15,8 +15,12 @@ const useService = () => {
     setLoading(true);
   }, []);
 
-  const fetchLogin = useCallback(() => {
-    axios.post(`/api${endpoints.signin}`)
+  const loginUser = useCallback(({ token }: { token: string }) => {
+    axios.get(`${endpoints.baseUrl}/api/v1/test`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
     .then(res => setResponse(res.data as Auth))
     .catch(err => setError(err.message))
     .finally(() => setLoading(false));
@@ -56,7 +60,7 @@ const useService = () => {
 
   return {
     actions: {
-      fetchLogin,
+      loginUser,
       getMessages,
       getMessage,
       createMessage,

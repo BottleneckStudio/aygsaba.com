@@ -12,12 +12,17 @@ import (
 	"org.aygsaba.com/internal/config"
 	appHandler "org.aygsaba.com/src/api/handler"
 	appRouter "org.aygsaba.com/src/api/router"
-	"org.aygsaba.com/src/datastore/inmemory"
+	firestore "org.aygsaba.com/src/datastore/firebase"
+	"org.aygsaba.com/src/datastore/sqlite3"
 	"org.aygsaba.com/src/http/server"
-	"org.aygsaba.com/src/repository"
+	"org.aygsaba.com/src/repository/firebase"
 )
 
 var ctx = context.Background()
+
+// TODO!! add firebase config in the config file
+// instead adding here.
+const firebaseConfig = ``
 
 // Start the application.
 // This serves as the
@@ -32,13 +37,21 @@ func Start(conf *config.Config) error {
 		server.WithAddress(serverAddr),
 	)
 
-	// TODO:: replace this one
-	// with an actual DB.
-	memoryStore := inmemory.NewInmemoryStore()
-	authRepo := repository.NewAuth(memoryStore)
+	sqliteStore, err := sqlite3.NewStore(*conf)
+	if err != nil {
+		return err
+	}
+	defer sqliteStore.Close()
 
+	firebaseStore, err := firestore.NewFirebaseStore(firebaseConfig)
+	if err != nil {
+		log.Fatalln("Cannot start firebase store: ", err)
+		os.Exit(-1) // kill the app
+	}
+
+	firebaseAuthRepo := firebase.NewFirebaseAuthRepository(firebaseStore)
 	handler := appHandler.New(
-		appHandler.WithAuthRepository(authRepo),
+		appHandler.WithAuthRepository(firebaseAuthRepo),
 	)
 	handler.Initialize(router)
 

@@ -14,6 +14,7 @@ export const Container = styled.div<{ isOpen: boolean, type: string }>`
   width: 100%;
   color: ${colors.white};
   padding: 0.625rem;
+  z-index: 200;
 
   ${p => {
     if (p.type === 'error') {
