@@ -1,31 +1,30 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TouchAppRoundedIcon from '@mui/icons-material/TouchAppRounded';
-import { IResolveParams } from 'reactjs-social-login';
 
 import AygsabaLogo from '../../../assets/images/aygsaba-logo.svg';
 import useService from '../../../services/http.service';
 
 import DefaultLayout from '../../../components/Layout/default';
 import Button from '../../../components/Button';
-import AlertBanner, { AlertBannerState } from '../../../components/AlertBanner';
+import AlertBanner from '../../../components/AlertBanner';
 import Drawer from '../../../components/Drawer';
 import { FormGroup, ButtonGroup } from '../../../components/Form';
 
 import { Container, Logo, StartButton } from './components';
 import { AuthContext } from '../../../context/auth';
 
+import { LoginPayloadType } from '../../../types/payloads';
+
 import FacebookButton from './socialButton';
 
 const SigninPage = () => {
   const navigate = useNavigate();
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const { actions: { loginUser, setInitial }, result } = useService();
   const [alert, setAlert] = useState<boolean>(false);
-  const [alertState, setAlertState] = useState<AlertBannerState>({
-    content: '',
-    type: 'info'
-  })
+  const [alertContent, setAlertContent] = useState<string>('');
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   const closeErrorAlert = () => {
@@ -33,35 +32,24 @@ const SigninPage = () => {
     setAlert(false);
   }
 
-  const handleClick = () => loginUser({
-    token: auth.token
-  });
+  // handle login
+  const handleLogin = async (payload: LoginPayloadType) => {
+    setIsDrawerOpen(false);
 
-  const handleFacebookLogin = (res: IResolveParams) => {
-    console.log(res);
-    loginUser({ token: res.data?.accessToken });
-    // setAuth({
-      // id: res.data?.id,
-      // token: res.data?.accessToken,
-      // username: res.data?.email,
-      // image: res.data?.picture?.data?.url
-    // });
-  };
-
-  const handleFacebookReject = () => {
-    setAlert(true);
-    setAlertState({
-      content: 'Facebook login failed',
-      type: 'error'
-    });
+    try {
+      await loginUser(payload)
+    } catch (err) {
+      setAlert(true);
+      setAlertContent('Error logging in user');
+    }
   };
 
   useEffect(() => {
     if (result.error === '' && result.response !== null) {
-      setAuth(result.response);
       navigate('/me', { replace: true });
     } else if (result.error !== '' && result.response === null) {
       setAlert(true);
+      setAlertContent(result.error);
     }
   }, [result]);
 
@@ -70,14 +58,6 @@ const SigninPage = () => {
       navigate('/me', { replace: true });
     }
   }, [auth]);
-
-  useEffect(() => {
-    if (!alert) return;
-    setAlertState({
-      content: result.error,
-      type: 'error'
-    });
-  }, [alert]);
 
   return (
     <>
@@ -102,8 +82,7 @@ const SigninPage = () => {
         <FormGroup>
           <ButtonGroup>
             <FacebookButton
-              onResolve={handleFacebookLogin}
-              onReject={handleFacebookReject}
+              onLogin={handleLogin}
             />
             <Button
               className="twitter width100"
@@ -114,7 +93,6 @@ const SigninPage = () => {
             <Button
               className="tiktok width100"
               data-testid="button-tiktok"
-              onClick={handleClick}
             >
               Tiktok
             </Button>
@@ -123,8 +101,8 @@ const SigninPage = () => {
       </Drawer>
       <AlertBanner
         open={alert}
-        content={alertState.content}
-        type={alertState.type}
+        content={alertContent}
+        type="error"
         onClose={closeErrorAlert}
       />
     </>

@@ -1,5 +1,7 @@
+const domain = process.env.REACT_APP_API_DOMAIN;
+
 const endpoints = {
-  baseUrl: 'https://41b9973671318e.lhr.life',
+  baseUrl: domain as string,
   signin: '/signin',
   messages: '/messages'
 };
