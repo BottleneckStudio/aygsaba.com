@@ -53,7 +53,9 @@ const useService = () => {
       const res = await axios.get(
         `${endpoints.baseUrl}/api/v1${endpoints.messages}`,
         {
-          headers: { token },
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
           params: { id: userId }
         }
       );
@@ -75,7 +77,9 @@ const useService = () => {
       const res = await axios.get(
         `${endpoints.baseUrl}/api/v1${endpoints.messages}/${id}`,
         {
-          headers: { token }
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       );
 
@@ -96,8 +100,7 @@ const useService = () => {
       content,
       hideByView,
       limit,
-      status,
-      user
+      userId
     } = createMessagePayload;
 
     try {
@@ -108,10 +111,13 @@ const useService = () => {
           content,
           hideByView,
           limit,
-          status,
-          user
+          userId
         },
-        { headers: { token } }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
 
       setResponse(res.data as Message[]);
