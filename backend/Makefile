@@ -5,14 +5,14 @@ run: test migrate docker
 		-p 3001:3000 \
 		-v ${PWD}/data:/data \
 		-v ${PWD}/etc/litestream.yml:/etc/litestream.yml \
-		-e REPLICA_URL=s3://litestream-bkt/db \
+		-e REPLICA_URL=s3://aygsaba-litestream/db \
 		-e LITESTREAM_ACCESS_KEY_ID \
 		-e LITESTREAM_SECRET_ACCESS_KEY \
-		api.aygsaba.com:rc06
+		api.aygsaba.com:rc07
 
 docker:
 	make migrate
-	docker build -f Dockerfile -t api.aygsaba.com:rc06 ./
+	docker build -f Dockerfile -t api.aygsaba.com:rc07 ./
 
 migrate:
 	goose -dir=data/migrations/ sqlite3 ./data/db status

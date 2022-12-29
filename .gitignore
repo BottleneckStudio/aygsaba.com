@@ -16,6 +16,9 @@ backend/.build/*
 
 backend/database/*.sqlite3
 backend/database/.app.sqlite3-litestream
+backend/data/db
+
+backend/generated
 
 # Test binary, built with `go test -c`
 *.test
