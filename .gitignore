@@ -22,6 +22,7 @@ backend/data/db-shm
 backend/data/db-wal
 
 backend/internal/generated/*
+backend/configs/local.yaml
 
 backend/tmp/main
 backend/.build

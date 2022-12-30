@@ -1,0 +1,11 @@
+env: local
+debug: true
+
+app:
+  host: 0.0.0.0
+  port: 3000
+  api_version: /api/v1
+
+database:
+  dialect: sqlite3
+  dsn: 'file:data/sample?cache=shared&mode=rwc&_journal_mode=WAL'
