@@ -1,42 +1,33 @@
 VERSION=v0.0.0
 TODAY = $(shell date +"%Y%m%d_%H%M%S")
 SHA = $(shell git rev-parse --short HEAD)
+DOCKER_TAG=${SHA}-${VERSION}
 
-# since we are using sqlite3 as our primary datastore, use this as our ldflags.
-LDFLAGS=-ldflags='-X api.version=${VERSION}.build.${TODAY}:${SHA} -s -w -extldflags "-static"'
+.PHONY: run docker migrate test cover sqlc
 
-NAME=app
-OUT=.build/api
-MAIN=cmd/${NAME}/api.go
+run: test migrate docker
+	docker run -it \
+		-p 3001:3000 \
+		-v ${PWD}/data:/data \
+		-v ${PWD}/etc/litestream.yml:/etc/litestream.yml \
+		-e REPLICA_URL=s3://aygsaba-litestream/db \
+		-e LITESTREAM_ACCESS_KEY_ID \
+		-e LITESTREAM_SECRET_ACCESS_KEY \
+		api.aygsaba.com:${DOCKER_TAG}
 
-build:
-	go mod verify
-	go mod tidy
-	CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build ${LDFLAGS} -installsuffix -a -tags osusergo,netgo,sqlite_omit_load_extension -o ${OUT} ${MAIN}	
+docker:
+	make migrate
+	docker build -f Dockerfile -t api.aygsaba.com:${DOCKER_TAG} ./
 
-local: build
-	# uses config/local.yaml as config file.
-	./.build/api
-
-	# alternatively, passing a config file
-	# ./.build/api -config=config/dev.yaml
+migrate:
+	goose -dir=data/migrations/ sqlite3 ./data/db status
+	goose -dir=data/migrations/ sqlite3 ./data/db up
 
 test:
 	GO111MODULE=on go test -race -v -coverprofile=cover.out ./...
 
-migrate:
-	goose -dir=database/migrations/ sqlite3 ./database/app.sqlite3 status
-	goose -dir=database/migrations/ sqlite3 ./database/app.sqlite3 up
+cover:test
+	go tool cover -html=cover.out
 
-docker-local: migrate
-	docker build -f Dockerfile -t api:${SHA} ./
-
-docker-run:
-	docker run \
-		-p 3001:3000 \
-		-v ${PWD}/database/app.sqlite3:/data/db \
-		-v ${PWD}/database/litestream.yml:/etc/litestream.yml \
-		-e REPLICA_URL=s3://aygsaba-litestream/db \
-		-e LITESTREAM_ACCESS_KEY_ID \
-		-e LITESTREAM_SECRET_ACCESS_KEY \
-		api:${SHA}
+sqlc:
+	sqlc generate -f configs/sqlc.yaml

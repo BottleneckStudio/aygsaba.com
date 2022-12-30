@@ -8,4 +8,4 @@ app:
 
 database:
   dialect: sqlite3
-  dsn: 'file:database/app.sqlite3?cache=shared&mode=rwc&_journal_mode=WAL'
+  dsn: 'file:data/sample?cache=shared&mode=rwc&_journal_mode=WAL'

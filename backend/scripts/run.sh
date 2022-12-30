@@ -3,11 +3,11 @@ set -e
 
 # Restore the database if it does not already exist.
 if [ -f /data/db ]; then
-	echo "Database already exists, skipping restore"
+	echo "Database already exists, skipping restore..."
 else
-	echo "No database found, restoring from replica if exists"
+	echo "No database found, restoring from replica if exists..."
 	litestream restore -v -if-replica-exists -o /data/db "${REPLICA_URL}"
-fi
+fi;
 
 # Run litestream with your app as the subprocess.
-exec litestream replicate -exec "/usr/local/bin/api -config=config/local.yaml"
+exec litestream replicate -exec "/usr/local/bin/api -dsn /data/db"

@@ -1,11 +1,11 @@
 -- +goose Up
--- model: user
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` BLOB NOT NULL,
-  `email` TEXT NOT NULL,
-  `avatar` BLOB NOT NULL,
-  `created_at` TEXT NOT NULL,
-  PRIMARY KEY (`id`)
+-- model: User
+CREATE TABLE IF NOT EXISTS users (
+  id BLOB NOT NULL PRIMARY KEY,
+  email TEXT NOT NULL,
+  avatar TEXT,
+  created_at TEXT NOT NULL,
+  UNIQUE(email)
 );
 
 -- +goose StatementBegin
