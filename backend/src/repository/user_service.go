@@ -1,12 +1,12 @@
 package repository
 
-import "api.aygsaba.com/generated"
+import db "api.aygsaba.com/internal/generated"
 
 // UserService an interface from which our API module can access.
 type UserService interface {
-	InsertUser(generated.User) (generated.User, error)
-	RetrieveUser(id []byte) (generated.User, error)
-	ListUsers() ([]generated.User, error)
+	InsertUser(db.User) (db.User, error)
+	RetrieveUser(id []byte) (db.User, error)
+	ListUsers() ([]db.User, error)
 }
 
 type userService struct {
@@ -19,14 +19,14 @@ func NewUserService(repo UserRepository) UserService {
 	}
 }
 
-func (s *userService) InsertUser(user generated.User) (generated.User, error) {
+func (s *userService) InsertUser(user db.User) (db.User, error) {
 	return s.userRepository.CreateUser(user)
 }
 
-func (s *userService) RetrieveUser(id []byte) (generated.User, error) {
+func (s *userService) RetrieveUser(id []byte) (db.User, error) {
 	return s.userRepository.GetUserByID(id)
 }
 
-func (s *userService) ListUsers() ([]generated.User, error) {
+func (s *userService) ListUsers() ([]db.User, error) {
 	return s.userRepository.GetAllUsers()
 }

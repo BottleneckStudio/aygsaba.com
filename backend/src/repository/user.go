@@ -4,24 +4,24 @@ import (
 	"context"
 	"errors"
 
-	"api.aygsaba.com/generated"
+	db "api.aygsaba.com/internal/generated"
 )
 
 var ErrUserIDRequired = errors.New("user ID is required")
 
 // UserRepository allows us to access the CRUD operation.
 type UserRepository interface {
-	CreateUser(generated.User) (generated.User, error)
-	GetUserByID(id []byte) (generated.User, error)
-	GetAllUsers() ([]generated.User, error)
+	CreateUser(db.User) (db.User, error)
+	GetUserByID(id []byte) (db.User, error)
+	GetAllUsers() ([]db.User, error)
 }
 
 type userRepository struct {
-	Tx  *generated.Queries
+	Tx  *db.Queries
 	Ctx context.Context
 }
 
-func NewUserRepository(tx *generated.Queries) UserRepository {
+func NewUserRepository(tx *db.Queries) UserRepository {
 	return &userRepository{
 		Tx:  tx,
 		Ctx: context.Background(),
@@ -29,8 +29,8 @@ func NewUserRepository(tx *generated.Queries) UserRepository {
 }
 
 // CreateUser creates a given user.
-func (repo *userRepository) CreateUser(user generated.User) (generated.User, error) {
-	arg := generated.CreateUserParams{
+func (repo *userRepository) CreateUser(user db.User) (db.User, error) {
+	arg := db.CreateUserParams{
 		ID:        user.ID,
 		Email:     user.Email,
 		CreatedAt: user.CreatedAt,
@@ -44,9 +44,9 @@ func (repo *userRepository) CreateUser(user generated.User) (generated.User, err
 	return createdUser, nil
 }
 
-func (repo *userRepository) GetUserByID(id []byte) (generated.User, error) {
+func (repo *userRepository) GetUserByID(id []byte) (db.User, error) {
 	if id == nil {
-		return generated.User{}, ErrUserIDRequired
+		return db.User{}, ErrUserIDRequired
 	}
 
 	foundUser, err := repo.Tx.GetUser(repo.Ctx, id)
@@ -57,7 +57,7 @@ func (repo *userRepository) GetUserByID(id []byte) (generated.User, error) {
 	return foundUser, nil
 }
 
-func (repo *userRepository) GetAllUsers() ([]generated.User, error) {
+func (repo *userRepository) GetAllUsers() ([]db.User, error) {
 	users, err := repo.Tx.ListUsers(repo.Ctx)
 	if err != nil {
 		return nil, err

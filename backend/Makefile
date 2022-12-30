@@ -1,3 +1,8 @@
+VERSION=v0.0.0
+TODAY = $(shell date +"%Y%m%d_%H%M%S")
+SHA = $(shell git rev-parse --short HEAD)
+DOCKER_TAG=${SHA}-${VERSION}
+
 .PHONY: run docker migrate test cover sqlc
 
 run: test migrate docker
@@ -8,11 +13,11 @@ run: test migrate docker
 		-e REPLICA_URL=s3://aygsaba-litestream/db \
 		-e LITESTREAM_ACCESS_KEY_ID \
 		-e LITESTREAM_SECRET_ACCESS_KEY \
-		api.aygsaba.com:rc07
+		api.aygsaba.com:${DOCKER_TAG}
 
 docker:
 	make migrate
-	docker build -f Dockerfile -t api.aygsaba.com:rc07 ./
+	docker build -f Dockerfile -t api.aygsaba.com:${DOCKER_TAG} ./
 
 migrate:
 	goose -dir=data/migrations/ sqlite3 ./data/db status

@@ -5,5 +5,5 @@ sql:
     queries: "../data/queries"
     gen:
       go:
-        package: "generated"
-        out: "../src/generated"
+        package: "db"
+        out: "../internal/generated"

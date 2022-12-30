@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	"api.aygsaba.com/generated"
+	db "api.aygsaba.com/internal/generated"
 	"api.aygsaba.com/src/repository"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
@@ -36,16 +36,16 @@ func run() error {
 	}
 
 	// Open database file.
-	db, err := sql.Open("sqlite3", *dsn)
+	dbConn, err := sql.Open("sqlite3", *dsn)
 	if err != nil {
 		return err
 	}
-	defer db.Close()
+	defer dbConn.Close()
 
 	e := echo.New()
 
 	e.GET("/users", func(c echo.Context) error {
-		dbQuery := generated.New(db)
+		dbQuery := db.New(dbConn)
 
 		userRepo := repository.NewUserRepository(dbQuery)
 		userSvc := repository.NewUserService(userRepo)
