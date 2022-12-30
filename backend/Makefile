@@ -1,4 +1,4 @@
-.PHONY: run docker migrate test cover
+.PHONY: run docker migrate test cover sqlc
 
 run: test migrate docker
 	docker run -it \
@@ -24,3 +24,5 @@ test:
 cover:test
 	go tool cover -html=cover.out
 
+sqlc:
+	sqlc generate -f configs/sqlc.yaml

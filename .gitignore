@@ -23,6 +23,9 @@ backend/data/db-wal
 
 backend/generated
 
+backend/tmp/main
+backend/.build
+
 # Test binary, built with `go test -c`
 *.test
 
